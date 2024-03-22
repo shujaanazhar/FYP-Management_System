@@ -1,0 +1,109 @@
+﻿@page
+@model AdministratorHomePageModel
+@{
+    ViewData["Title"] = "Administrator Home";
+    Layout = null;
+
+}
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .approve-button {
+        background-color: lightgreen;
+        color: white;
+    }
+
+    .reject-button {
+        background-color: lightcoral;
+        color: white;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+</style>
+
+<div class="container">
+
+    <h1>Welcome, Administrator!</h1>
+
+    <h2>Supervisor Requests</h2>
+    @if (Model.SupervisorRequests.Count > 0)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Supervisor Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model.SupervisorRequests)
+                {
+                    <tr>
+                        <td>@request.SupervisorName</td>
+                        <td>
+                            <form method="post">
+                                <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorId="@request.SupervisorId">Approve</button>
+                                <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorId="@request.SupervisorId">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No supervisor requests pending.</p>
+    }
+
+    <h2>FYPs List</h2>
+    <ul>
+        @foreach (var fyp in Model.Fyps)
+        {
+            <li><a href="#">@fyp</a></li>
+        }
+    </ul>
+
+    <h2>Instructors List</h2>
+    <ul>
+        @foreach (var instructor in Model.Instructors)
+        {
+            <li><a href="#">@instructor</a></li>
+        }
+    </ul>
+</div>

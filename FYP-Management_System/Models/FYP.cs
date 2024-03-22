@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FYP_Management_System.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NexGen.Models
@@ -20,5 +21,7 @@ namespace NexGen.Models
         // Navigation property to Supervisor
         public virtual Supervisor Supervisor { get; set; }
         public virtual ICollection<Student> Students { get; set; }
+
+        public virtual ICollection<Iteration> iterations { get; set; }
     }
 }
