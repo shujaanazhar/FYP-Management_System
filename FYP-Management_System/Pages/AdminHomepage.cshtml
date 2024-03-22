@@ -2,16 +2,16 @@
 @model AdministratorHomePageModel
 @{
     ViewData["Title"] = "Administrator Home";
-    Layout = null;
+    // Layout = null;
 
 }
 
 <style>
     body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        /* display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; */
     }
 
     .container {
@@ -55,55 +55,86 @@
         padding: 0;
     }
 </style>
-
 <div class="container">
-
     <h1>Welcome, Administrator!</h1>
 
-    <h2>Supervisor Requests</h2>
-    @if (Model.SupervisorRequests.Count > 0)
-    {
-        <table>
-            <thead>
-                <tr>
-                    <th>Supervisor Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var request in Model.SupervisorRequests)
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="supervisor-requests-tab" data-bs-toggle="tab" href="#supervisor-requests" role="tab" aria-controls="supervisor-requests" aria-selected="true">Supervisor Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="fyps-list-tab" data-bs-toggle="tab" href="#fyps-list" role="tab" aria-controls="fyps-list" aria-selected="false">FYPs List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="instructors-list-tab" data-bs-toggle="tab" href="#instructors-list" role="tab" aria-controls="instructors-list" aria-selected="false">Instructors List</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="supervisor-requests" role="tabpanel" aria-labelledby="supervisor-requests-tab">
+            @if (Model.SupervisorRequests.Count > 0)
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Supervisor Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model.SupervisorRequests)
+                        {
+                            <tr>
+                                <td>@request.SupervisorName</td>
+                                <td>
+                                    <form method="post">
+                                        <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorId="@request.SupervisorId">Approve</button>
+                                        <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorId="@request.SupervisorId">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No supervisor requests pending.</p>
+            }
+        </div>
+        <div class="tab-pane fade" id="fyps-list" role="tabpanel" aria-labelledby="fyps-list-tab">
+            <ul>
+                @foreach (var fyp in Model.Fyps)
                 {
-                    <tr>
-                        <td>@request.SupervisorName</td>
-                        <td>
-                            <form method="post">
-                                <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorId="@request.SupervisorId">Approve</button>
-                                <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorId="@request.SupervisorId">Reject</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <li><a href="#">@fyp</a></li>
                 }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No supervisor requests pending.</p>
-    }
-
-    <h2>FYPs List</h2>
-    <ul>
-        @foreach (var fyp in Model.Fyps)
-        {
-            <li><a href="#">@fyp</a></li>
-        }
-    </ul>
-
-    <h2>Instructors List</h2>
-    <ul>
-        @foreach (var instructor in Model.Instructors)
-        {
-            <li><a href="#">@instructor</a></li>
-        }
-    </ul>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="instructors-list" role="tabpanel" aria-labelledby="instructors-list-tab">
+            <ul>
+                @foreach (var instructor in Model.Instructors)
+                {
+                    <li><a href="#">@instructor</a></li>
+                }
+            </ul>
+        </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Bootstrap's tab JavaScript plugin initialization
+            $('#adminTabs a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+            // Activate the first tab by default
+            $('#adminTabs a:first').tab('show');
+        });
+    </script>
+}

@@ -32,14 +32,14 @@ namespace FYP_Management_System.Pages
         public IActionResult OnPostApproveRequest(int supervisorId)
         {
             // Your logic here
-            return RedirectToPage("./Admin_homepage");
+            return RedirectToPage("/AdminHomepage");
         }
 
         // Implement logic for rejecting supervisor request
         public IActionResult OnPostRejectRequest(int supervisorId)
         {
             // Your logic here
-            return RedirectToPage("./Admin_homepage");
+            return RedirectToPage("AdminHomepage");
         }
     }
 
