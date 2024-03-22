@@ -1,5 +1,5 @@
 ﻿@page
-@model FYP_Management_System.Pages.SupervisorModel
+@model FYP_Management_System.Pages.SupervisorLoginModel
 @{
     ViewData["Title"] = "Supervisor Login";
 }
@@ -52,8 +52,8 @@
         <h2 class="login-title">Supervisor Login</h2>
         <br />
         <form method="post">
-            <input type="text" class="login-input" placeholder="Email Address" />
-            <input type="password" class="login-input" placeholder="Password" />
+            <input type="text" class="login-input" placeholder="Email Address" asp-for="Email"/>
+            <input type="password" class="login-input" placeholder="Password" asp-for="Password"/>
             <button type="submit" class="login-button">Login</button>
             @* <p class="alert alert-danger mt-3 text-center" role="alert" style="@(!string.IsNullOrEmpty(Model.Message) ? "" : "display:none;")">@Model.Message</p> *@
         </form>

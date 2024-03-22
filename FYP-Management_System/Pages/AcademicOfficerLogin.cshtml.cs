@@ -39,7 +39,9 @@ namespace FYP_Management_System.Pages
                 return Page();
             }
 
-            User user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == Email);
+            User user = await _context.Users
+                              .AsNoTracking()
+                              .FirstOrDefaultAsync(u => u.Email == Email && u.Type == "AO");
             if (user != null)
             {
                 var passwordHasher = new PasswordHasher<User>(); // Instantiate PasswordHasher here

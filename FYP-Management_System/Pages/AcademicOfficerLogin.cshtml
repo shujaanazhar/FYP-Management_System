@@ -54,12 +54,12 @@
         <form method="post">
             <input type="text" class="login-input" placeholder="Email Address" asp-for="Email"/>
             <input type="password" class="login-input" placeholder="Password" asp-for="Password"/>
-            <button type="submit" class="login-button" onclick="OptionSelected()">Login</button>
+            <button type="submit" class="login-button" onclick="OptionSelected('Academic Officer')">Login</button>
             <p class="alert alert-danger mt-3 text-center" role="alert" style="@(!string.IsNullOrEmpty(Model.Message) ? "" : "display:none;")">@Model.Message</p>
         </form>
         <br />
         <div class="text-center">
-            <a href="#" class="text-muted" onclick="OptionSelected()">Don't have an account? Sign Up</a>
+            <a href="#" class="text-muted" onclick="OptionSelected('Login')">Don't have an account? Sign Up</a>
         </div>
     </div>
 </div>
@@ -71,7 +71,7 @@
             window.location.href = "/AcademicOfficerSignUp";
         }
         else if (option == "Login") { 
-            window.location.href = "/AdminHomepage";
+            window.location.href = "/AcademicOfficerLogin";
         }
     }
 </script>
