@@ -55,7 +55,7 @@
             <input type="text" class="login-input" placeholder="Email" asp-for= "NewUser.Email" required/>
             <input type="password" class="login-input" placeholder="Password" asp-for="NewUser.Password" required/>
             <input type="text" class="login-input" placeholder="Full Name" asp-for="NewUser.Name" required/>
-            @* <p class="alert alert-danger mt-3 text-center" role="alert" style="@(!string.IsNullOrEmpty(Model.Message) ? "" : "display:none;")">@Model.Message</p> *@
+            <p class="alert alert-danger mt-3 text-center" role="alert" style="@(!string.IsNullOrEmpty(Model.Message) ? "" : "display:none;")">@Model.Message</p>
             <button type="submit" class="login-button">Signup</button>
         </form>
         <br />

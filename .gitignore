@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 FYP-Management_System/appsettings.json
+FYP-Management_System/Migrations
+FYP-Management_System/logs
