@@ -74,24 +74,26 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="supervisor-requests" role="tabpanel" aria-labelledby="supervisor-requests-tab">
-            @if (Model.SupervisorRequests.Count > 0)
+            @if (Model.ApprovedSupervisors.Count > 0)
             {
                 <table>
                     <thead>
                         <tr>
-                            <th>Supervisor Name</th>
+                            <th>Supervisor Email</th>
+                            <th>Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var request in Model.SupervisorRequests)
+                        @foreach (var request in Model.ApprovedSupervisors)
                         {
                             <tr>
-                                <td>@request.SupervisorName</td>
+                                <td>@request.Email</td>
+                                <td>@request.Name</td>
                                 <td>
                                     <form method="post">
-                                        <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorId="@request.SupervisorId">Approve</button>
-                                        <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorId="@request.SupervisorId">Reject</button>
+                                        <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorEmail="@request.Email">Approve</button>
+                                        <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorEmail="@request.Email">Reject</button>
                                     </form>
                                 </td>
                             </tr>
@@ -136,5 +138,14 @@
             // Activate the first tab by default
             $('#adminTabs a:first').tab('show');
         });
+
+        function AppOrDeny(option) {
+            if (option == "Approve") {
+
+            }
+            else {
+
+            }
+        }
     </script>
 }

@@ -1,27 +1,41 @@
+using FYP_Management_System.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FYP_Management_System.Pages
 {
     public class AdministratorHomePageModel : PageModel
     {
-        public List<SupervisorRequest> SupervisorRequests { get; set; }
+        private readonly AppDbContext _context;
+
+        public AdministratorHomePageModel(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public class SupervisorInfo
+        {
+            
+            public string Email { get; set; }
+            public string Name { get; set; }
+        }
         public List<string> Fyps { get; set; }
         public List<string> Instructors { get; set; }
 
+        public List<SupervisorInfo> ApprovedSupervisors { get; set; }
         public void OnGet()
         {
-            // Fetch data from your database or other sources
-            // Populate SupervisorRequests, Fyps, and Instructors lists
-            // For demonstration purposes, I'll leave them as initialized lists
-
-            SupervisorRequests = new List<SupervisorRequest>
-            {
-                new SupervisorRequest { SupervisorId = 1, SupervisorName = "Arshad Iqbal" },
-                new SupervisorRequest { SupervisorId = 2, SupervisorName = "Idrees" },
-                new SupervisorRequest { SupervisorId = 2, SupervisorName = "Sidra Khalid" }
-            };
+            ApprovedSupervisors = (from supervisor in _context.Supervisors
+                                   join user in _context.Users on supervisor.Email equals user.Email
+                                   where supervisor.Status == "Reject"
+                                   select new SupervisorInfo // Create new instances of SupervisorInfo
+                                   {
+                                       Email = supervisor.Email,
+                                       Name = user.Name
+                                   }).ToList();
 
             Fyps = new List<string> { "Cross-Site Scripting (XSS) Prevention", "SQL Injection Prevention", "Firewall Rules Analyzer" };
 
@@ -41,11 +55,34 @@ namespace FYP_Management_System.Pages
             // Your logic here
             return RedirectToPage("AdminHomepage");
         }
-    }
 
-    public class SupervisorRequest
-    {
-        public int SupervisorId { get; set; }
-        public string SupervisorName { get; set; }
+        public async Task<IActionResult> OnPostApproveRequest(string supervisorEmail)
+        {
+            var supervisor = await _context.Supervisors
+                .FirstOrDefaultAsync(s => s.Email == supervisorEmail);
+
+            if (supervisor != null)
+            {
+                supervisor.Status = "Approved";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostRejectRequest(string supervisorEmail)
+        {
+            var supervisor = await _context.Supervisors
+                .FirstOrDefaultAsync(s => s.Email == supervisorEmail);
+
+            if (supervisor != null)
+            {
+                supervisor.Status = "Reject";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
     }
 }
