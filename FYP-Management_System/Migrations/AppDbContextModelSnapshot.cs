@@ -21,6 +21,32 @@ namespace FYP_Management_System.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Iteration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FYPName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FYPName");
+
+                    b.ToTable("Iteration");
+                });
+
             modelBuilder.Entity("NexGen.Models.FYP", b =>
                 {
                     b.Property<string>("Name")
@@ -90,6 +116,10 @@ namespace FYP_Management_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Email");
 
                     b.ToTable("Supervisors");
@@ -115,6 +145,39 @@ namespace FYP_Management_System.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ToDoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IterationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Task")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IterationId");
+
+                    b.ToTable("ToDoItem");
+                });
+
+            modelBuilder.Entity("Iteration", b =>
+                {
+                    b.HasOne("NexGen.Models.FYP", "FYP")
+                        .WithMany("Iterations")
+                        .HasForeignKey("FYPName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FYP");
                 });
 
             modelBuilder.Entity("NexGen.Models.FYP", b =>
@@ -148,8 +211,26 @@ namespace FYP_Management_System.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ToDoItem", b =>
+                {
+                    b.HasOne("Iteration", "Iteration")
+                        .WithMany("ToDos")
+                        .HasForeignKey("IterationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Iteration");
+                });
+
+            modelBuilder.Entity("Iteration", b =>
+                {
+                    b.Navigation("ToDos");
+                });
+
             modelBuilder.Entity("NexGen.Models.FYP", b =>
                 {
+                    b.Navigation("Iterations");
+
                     b.Navigation("Students");
                 });
 

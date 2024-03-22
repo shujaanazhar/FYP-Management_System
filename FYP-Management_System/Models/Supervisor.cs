@@ -17,6 +17,7 @@ namespace NexGen.Models
         [Required]
         public string Domain { get; set; }
 
+        public string Status { get; set; } = "Reject";
         public virtual User User { get; set; }
 
         public virtual ICollection<FYP> FYP { get; set; }
