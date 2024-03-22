@@ -1,11 +1,8 @@
 using FYP_Management_System.DAL;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexGen.Models;
-using System;
-using System.Threading.Tasks;
 
 namespace FYP_Management_System.Pages
 {
