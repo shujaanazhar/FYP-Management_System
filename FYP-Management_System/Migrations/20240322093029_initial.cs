@@ -14,33 +14,32 @@ namespace FYP_Management_System.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Supervisors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Domain = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Supervisors", x => x.Id);
+                    table.PrimaryKey("PK_Supervisors", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_Supervisors_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Supervisors_Users_Email",
+                        column: x => x.Email,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -51,16 +50,17 @@ namespace FYP_Management_System.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SupervisorId = table.Column<int>(type: "int", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Domain = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Domain = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SupervisorEmail = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FYPs", x => x.Name);
                     table.ForeignKey(
-                        name: "FK_FYPs_Supervisors_SupervisorId",
-                        column: x => x.SupervisorId,
+                        name: "FK_FYPs_Supervisors_SupervisorEmail",
+                        column: x => x.SupervisorEmail,
                         principalTable: "Supervisors",
-                        principalColumn: "Id",
+                        principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -68,8 +68,7 @@ namespace FYP_Management_System.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Batch = table.Column<int>(type: "int", nullable: false),
                     Department = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     FYP_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -78,7 +77,7 @@ namespace FYP_Management_System.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x.Email);
                     table.ForeignKey(
                         name: "FK_Students_FYPs_FYPName",
                         column: x => x.FYPName,
@@ -87,9 +86,9 @@ namespace FYP_Management_System.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FYPs_SupervisorId",
+                name: "IX_FYPs_SupervisorEmail",
                 table: "FYPs",
-                column: "SupervisorId");
+                column: "SupervisorEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_FYPName",
