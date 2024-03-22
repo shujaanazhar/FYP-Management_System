@@ -7,7 +7,8 @@ namespace NexGen.Models
     {
         [Key]
         [ForeignKey("User")]
-        public int Id { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
         public int Batch { get; set; }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FYP_Management_System.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240320112358_initial")]
+    [Migration("20240322093029_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -37,23 +37,24 @@ namespace FYP_Management_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SupervisorEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("SupervisorId")
                         .HasColumnType("int");
 
                     b.HasKey("Name");
 
-                    b.HasIndex("SupervisorId");
+                    b.HasIndex("SupervisorEmail");
 
                     b.ToTable("FYPs");
                 });
 
             modelBuilder.Entity("NexGen.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Batch")
                         .HasColumnType("int");
@@ -72,7 +73,7 @@ namespace FYP_Management_System.Migrations
                     b.Property<string>("FYP_Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.HasIndex("FYPName");
 
@@ -81,8 +82,8 @@ namespace FYP_Management_System.Migrations
 
             modelBuilder.Entity("NexGen.Models.Supervisor", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Domain")
                         .IsRequired()
@@ -92,18 +93,15 @@ namespace FYP_Management_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.ToTable("Supervisors");
                 });
 
             modelBuilder.Entity("NexGen.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -114,11 +112,10 @@ namespace FYP_Management_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.ToTable("Users");
                 });
@@ -127,7 +124,7 @@ namespace FYP_Management_System.Migrations
                 {
                     b.HasOne("NexGen.Models.Supervisor", "Supervisor")
                         .WithMany("FYP")
-                        .HasForeignKey("SupervisorId")
+                        .HasForeignKey("SupervisorEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -147,7 +144,7 @@ namespace FYP_Management_System.Migrations
                 {
                     b.HasOne("NexGen.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("Email")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
