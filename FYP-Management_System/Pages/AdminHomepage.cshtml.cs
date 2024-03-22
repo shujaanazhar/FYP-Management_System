@@ -43,18 +43,6 @@ namespace FYP_Management_System.Pages
         }
 
         // Implement logic for approving supervisor request
-        public IActionResult OnPostApproveRequest(int supervisorId)
-        {
-            // Your logic here
-            return RedirectToPage("/AdminHomepage");
-        }
-
-        // Implement logic for rejecting supervisor request
-        public IActionResult OnPostRejectRequest(int supervisorId)
-        {
-            // Your logic here
-            return RedirectToPage("AdminHomepage");
-        }
 
         public async Task<IActionResult> OnPostApproveRequest(string supervisorEmail)
         {

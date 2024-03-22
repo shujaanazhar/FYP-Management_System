@@ -52,7 +52,7 @@ namespace FYP_Management_System.Pages
                     {
                         _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}");
                         LogSigninInformation(user);
-                        return RedirectToPage("/AdminHomepage");
+                        return RedirectToPage("/SupervisorHomepage");
                     }
                 }
             }
