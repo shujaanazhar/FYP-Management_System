@@ -5,6 +5,9 @@
     // Layout = null;
 
 }
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <style>
     body {
@@ -107,21 +110,67 @@
             }
         </div>
         <div class="tab-pane fade" id="fyps-list" role="tabpanel" aria-labelledby="fyps-list-tab">
-            <ul>
-                @foreach (var fyp in Model.Fyps)
-                {
-                    <li><a href="#">@fyp</a></li>
-                }
-            </ul>
+            @if (Model.Fyps.Count > 0)
+            {
+                
+            }
+            else
+            {
+                <p>No FYPs Registered</p>
+            }
         </div>
         <div class="tab-pane fade" id="instructors-list" role="tabpanel" aria-labelledby="instructors-list-tab">
-            <ul>
-                @foreach (var instructor in Model.Instructors)
-                {
-                    <li><a href="#">@instructor</a></li>
-                }
-            </ul>
+            @if (Model.AllSupervisors.Count > 0)
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Supervisor Email</th>
+                            <th>Name</th>
+                            <th>Domain</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var supervisor in Model.AllSupervisors)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0)" data-toggle="modal" 
+                                    data-target="#supervisorDetailsModal" 
+                                    onclick="loadSupervisorDetails('@supervisor.Email')">@supervisor.Email
+                                    </a>
+                                </td>
+                                <td>@supervisor.Name</td>
+                                <td>@supervisor.Domain</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No Supervisors Available</p>
+            }
         </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="supervisorDetailsModal" tabindex="-1" role="dialog" aria-labelledby="supervisorDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supervisorDetailsModalLabel">Supervisor Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -139,13 +188,31 @@
             $('#adminTabs a:first').tab('show');
         });
 
-        function AppOrDeny(option) {
-            if (option == "Approve") {
-
-            }
-            else {
-
-            }
+        function loadSupervisorDetails(email) {
+            $.ajax({
+                url: '?handler=SupervisorDetails',
+                type: 'GET',
+                data: { email: email },
+                contentType: 'application/json',
+                success: function (data) {
+                    // Assuming 'data' is the JSON object returned from the server
+                    $('#supervisorDetailsModalLabel').text(`Details for ${data.email}`);
+                    var modalBody = $('#supervisorDetailsModal .modal-body');
+                    modalBody.empty();
+                    modalBody.append(`<p><strong>Role:</strong> ${data.role}</p>`);
+                    modalBody.append(`<p><strong>Domain:</strong> ${data.domain}</p>`);
+                    modalBody.append('<p><strong>FYPs Managed:</strong></p>');
+                    var ul = $('<ul></ul>');
+                    data.FYPs.forEach(function (fyp) {
+                        ul.append(`<li>${fyp.name} - ${fyp.details} (${fyp.domain})</li>`);
+                    });
+                    modalBody.append(ul);
+                    $('#supervisorDetailsModal').modal('show');
+                },
+                error: function (err) {
+                    console.error('Error fetching supervisor details:', err);
+                }
+            });
         }
     </script>
 }
