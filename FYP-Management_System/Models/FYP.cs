@@ -8,13 +8,16 @@ namespace NexGen.Models
         public string Name { get; set; }
 
         [Required]
-        public int SupervisorId { get; set; }
+        [EmailAddress]
+        public string SupervisorId { get; set; }
 
         [Required]
         public string Details { get; set; }
 
         [Required]
         public string Domain { get; set; }
+
+        public string? Status { get; set; } = "Pending";
 
         // Navigation property to Supervisor
         public virtual Supervisor Supervisor { get; set; }

@@ -112,7 +112,24 @@
         <div class="tab-pane fade" id="fyps-list" role="tabpanel" aria-labelledby="fyps-list-tab">
             @if (Model.Fyps.Count > 0)
             {
-                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FYP Name</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var fyp in Model.Fyps)
+                        {
+                            <tr>
+                                <td>@fyp.Name</td>
+                                <td>@fyp.Details</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
             }
             else
             {
