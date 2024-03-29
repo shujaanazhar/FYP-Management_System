@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NexGen.Models;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
 
 namespace FYP_Management_System.Pages
 {
@@ -52,7 +55,7 @@ namespace FYP_Management_System.Pages
                     {
                         _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}");
                         LogSigninInformation(user);
-                        return RedirectToPage("/SupervisorHomepage");
+                        return RedirectToPage("/SupervisorHomepage", new {id = user.Email});
                     }
                 }
             }

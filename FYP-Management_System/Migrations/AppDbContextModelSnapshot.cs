@@ -60,16 +60,16 @@ namespace FYP_Management_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SupervisorEmail")
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SupervisorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SupervisorId")
-                        .HasColumnType("int");
-
                     b.HasKey("Name");
 
-                    b.HasIndex("SupervisorEmail");
+                    b.HasIndex("SupervisorId");
 
                     b.ToTable("FYPs");
                 });
@@ -184,7 +184,7 @@ namespace FYP_Management_System.Migrations
                 {
                     b.HasOne("NexGen.Models.Supervisor", "Supervisor")
                         .WithMany("FYP")
-                        .HasForeignKey("SupervisorEmail")
+                        .HasForeignKey("SupervisorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

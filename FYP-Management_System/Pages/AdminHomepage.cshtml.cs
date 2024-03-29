@@ -28,8 +28,12 @@ namespace FYP_Management_System.Pages
             public string SupervisorID { get; set; }
             public string Details { get; set; }
             public string Domain { get; set; }
+            public List<string> StudentNames { get; set; }
+            public FypInfo()
+            {
+                StudentNames = new List<string>();
+            }
         }
-
         public List<FypInfo> Fyps { get; set; }
         public List<SupervisorInfo> ApprovedSupervisors { get; set; }
         public List<SupervisorInfo> AllSupervisors { get; set; }
@@ -62,8 +66,6 @@ namespace FYP_Management_System.Pages
                         Details = fyp.Details,
                         Domain = fyp.Domain,
                     }).ToList();
-
-            //Instructors = new List<string> { "Shujan", "Hameed", "Ibrhaim" };
         }
 
         // Implementing logic for approving supervisor request

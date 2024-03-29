@@ -1,4 +1,148 @@
 ﻿@page
 @model FYP_Management_System.Pages.SupervisorHomepageModel
 @{
+    ViewData["Title"] = "Supervisor Home";
 }
+<style>
+    body {
+        /* display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh; */
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .approve-button {
+        background-color: lightgreen;
+        color: white;
+    }
+
+    .reject-button {
+        background-color: lightcoral;
+        color: white;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Welcome, @Model.Supervisor.Name!</h1>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="supervisorTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="supervised-projects-tab" data-bs-toggle="tab" href="#supervised-projects" role="tab" aria-controls="supervised-projects" aria-selected="true">Supervised Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="project-proposals-tab" data-bs-toggle="tab" href="#project-proposals" role="tab" aria-controls="project-proposals" aria-selected="false">Project Proposals</a>
+            </li>
+            @* <li class="nav-item">
+                <a class="nav-link" id="instructors-list-tab" data-bs-toggle="tab" href="#instructors-list" role="tab" aria-controls="instructors-list" aria-selected="false">Instructors List</a>
+            </li> *@
+        </ul>
+
+        <!-- Tab Panes-->
+        <div class="tab-content">
+            <div class="tab-pane active" id="supervised-projects" role="tabpanel" aria-labelledby="sueprvised-projects-tab">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FYP Name</th>
+                            <th>Details</th>
+                            <th>Group Members</th>
+                            <Action></Action>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var fyp in Model.Fyps)
+                        {
+                            @* @if (fyp.Status == "Approved") *@
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-page="/FypIterations" asp-route-name="@fyp.Name">@fyp.Name</a>
+                                    </td>
+                                    <td>@fyp.Description</td>
+                                    <td>
+                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
+                                            @* @foreach (var studentName in fyp.StudentNames)
+                                    {
+                                    <li>@studentName</li>
+                                    } *@
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="project-proposals" role="tabpanel" aria-labelledby="project-proposals-tab">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FYP Name</th>
+                            <th>Details</th>
+                            <th>Group Members</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var fyp in Model.Fyps)
+                        {
+                            @if(fyp.Status == "Pending")
+                            {
+                                <tr>
+                                    <td>@fyp.Name</td>
+                                    <td>@fyp.Description</td>
+                                    <td>
+                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
+                                            @* @foreach (var studentName in fyp.StudentNames)
+                                    {
+                                    <li>@studentName</li>
+                                    } *@
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <form method="post">
+                                            <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorEmail="@fyp.Name">Approve</button>
+                                            <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorEmail="@fyp.Name">Reject</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
