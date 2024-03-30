@@ -1,4 +1,144 @@
 ﻿@page
 @model FYP_Management_System.Pages.FypIterationsModel
 @{
+    ViewData["Title"] = "Iterations";
 }
+<style>
+    .page-container {
+        margin: 20px;
+    }
+
+    .add-iteration-btn {
+        float: right; /* Keep the button aligned to the right */
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px; /* Add space below the button */
+    }
+
+    .iteration-form {
+        clear: both;
+        padding: 20px;
+        margin-top: 20px; /* Adjust if more space is needed between the button and the form */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 60%;
+        margin-left: auto; /* Center the form */
+        margin-right: auto; /* Center the form */
+        display: block; /* Ensure the form is a block-level element for auto margins to work */
+    }
+
+        .iteration-form h3 {
+            margin-top: 0;
+        }
+
+    input[type="text"], input[type="date"] {
+        padding: 10px;
+        margin: 10px 0;
+        width: 100%; /* Inputs take the full width of the form */
+        display: block;
+    }
+
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Iterations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-container">
+        <button id="addIterationBtn" class="add-iteration-btn">Create New Iteration</button>
+        <div id="iterationsContainer" class="iterations-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+<script>
+    document.getElementById('addIterationBtn').addEventListener('click', function () {
+        const container = document.getElementById('iterationsContainer');
+        const totalIterations = container.getElementsByClassName('iteration-form').length;
+
+        if (totalIterations >= 5) {
+            alert('Maximum of 5 iterations reached.');
+            return;
+        }
+
+        // Sets prvious iteration to readonly before creating a new one
+
+        const allInputFields = container.querySelectorAll('.iteration-form .form-control');
+        allInputFields.forEach(input => {
+            input.setAttribute('readonly', true);
+        });
+
+        const iterationNumber = totalIterations + 1;
+        const formHtml = `
+        <div class="iteration-form">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="iteration${iterationNumber}-tab" data-bs-toggle="tab" href="#iteration${iterationNumber}" role="tab" aria-controls="iteration${iterationNumber}" aria-selected="false">Iteration ${iterationNumber}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade" id="iteration${iterationNumber}" role="tabpanel" aria-labelledby="iteration${iterationNumber}-tab">
+                    <h5>Name:</h5>
+                    <input type="text" placeholder="Enter Iteration Name" class="form-control">
+                    <div class="form-group">
+                        <label for="iterationDetails${iterationNumber}">Enter details for Iteration ${iterationNumber}</label>
+                        <input type="text" id="iterationDetails${iterationNumber}" class="form-control" placeholder="Iteration details">
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate${iterationNumber}">Due Date</label>
+                        <input type="date" id="dueDate${iterationNumber}" class="form-control">
+                    </div>
+                    <button type="button" class="btn add-task-btn" id="addTaskBtn${iterationNumber}">+ Add Task</button>
+                    <div id="tasksContainer${iterationNumber}" class="tasks-container"></div>
+                </div>
+            </div>
+        </div>`;
+
+        container.insertAdjacentHTML('beforeend', formHtml);
+
+        document.getElementById(`addTaskBtn${iterationNumber}`).addEventListener('click', function () {
+            const tasksContainer = document.getElementById(`tasksContainer${iterationNumber}`);
+            const taskInputHtml = `<div class="form-group"><input type="text" class="form-control" placeholder="Task for Iteration ${iterationNumber}"></div>`;
+            tasksContainer.insertAdjacentHTML('beforeend', taskInputHtml);
+        });
+
+        // Deactivate existing tabs and their content and activate the new tab and its content
+        function deactivateAllTabsAndContents() {
+            const allTabs = container.querySelectorAll('.nav-link');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+            const allPanes = container.querySelectorAll('.tab-pane');
+            allPanes.forEach(pane => {
+                pane.classList.remove('show');
+                pane.classList.remove('active');
+            });
+        }
+
+        // Event listener for tabs to view without editing
+        container.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', () => {
+                deactivateAllTabsAndContents();
+                tab.classList.add('active');
+                const targetPaneId = tab.getAttribute('href').substring(1); // Remove '#' from href to get ID
+                const targetPane = document.getElementById(targetPaneId);
+                targetPane.classList.add('active', 'show');
+            });
+        });
+
+        // Activate the new tab and its content by default
+        const newTab = container.querySelector(`#iteration${iterationNumber}-tab`);
+        const newPane = container.querySelector(`#iteration${iterationNumber}`);
+        deactivateAllTabsAndContents(); // Ensure all other tabs are deactivated
+        newTab.classList.add('active');
+        newPane.classList.add('active', 'show');
+    });
+
+</script>
