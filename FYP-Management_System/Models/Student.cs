@@ -22,6 +22,8 @@ namespace NexGen.Models
         [Required]
         public float CGPA { get; set; }
 
+        public virtual User User { get; set; }
+
         // Navigation property to FYP
         public virtual FYP FYP { get; set; }
     }
