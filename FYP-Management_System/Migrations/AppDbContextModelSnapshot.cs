@@ -193,11 +193,19 @@ namespace FYP_Management_System.Migrations
 
             modelBuilder.Entity("NexGen.Models.Student", b =>
                 {
+                    b.HasOne("NexGen.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Email")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NexGen.Models.FYP", "FYP")
                         .WithMany("Students")
                         .HasForeignKey("FYPName");
 
                     b.Navigation("FYP");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NexGen.Models.Supervisor", b =>

@@ -1,0 +1,39 @@
+﻿@page
+@model UploadFIleModel
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-cloud-upload-alt"></i> Upload File</h1>
+        <form method="post" enctype="multipart/form-data">
+            <label for="file-upload">
+                <i class="fas fa-file-upload"></i> Select File:
+            </label>
+            <input type="file" id="file-upload" name="postedFiles" multiple />
+            <input type="submit" value="Upload" asp-page-handler="Upload" />
+        </form>
+        <div class="message">@Html.Raw(Model.Message)</div>
+
+        @if (Model.Files.Count > 0)
+        {
+            <h2>Files Uploaded:</h2>
+            <ul>
+                @foreach (var file in Model.Files)
+                {
+                    <li>@file</li>
+                }
+            </ul>
+        }
+    </div>
+</body>
+</html>
