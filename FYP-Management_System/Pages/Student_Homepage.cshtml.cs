@@ -21,7 +21,7 @@ namespace FYP_Management_System.Pages
         public string FYP_Name { get; set; }
         public float CGPA { get; set; }
         public string Name { get; set; }
-        public int SupervisorID { get; set; }
+        public string SupervisorID { get; set; }
         public string Details { get; set; }
         public string Domain { get; set; }
 

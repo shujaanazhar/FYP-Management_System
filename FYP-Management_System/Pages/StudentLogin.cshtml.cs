@@ -47,7 +47,7 @@ namespace FYP_Management_System.Pages
                 {
                     _logger.LogInformation($"User {user.Email} logged in at {DateTime.UtcNow}");
                     LogSigninInformation(user);
-                    return RedirectToPage("/Student_Homepage");
+                    return RedirectToPage("/Student_Homepage", new { id = user.Email});
                 }
             }
 
@@ -58,7 +58,7 @@ namespace FYP_Management_System.Pages
 
         private void LogSigninInformation(User newUser)
         {
-            string logFilePath = Path.Combine("logs", "Student_login_log.txt");
+            string logFilePath = Path.Combine("logs", "student_login_log.txt");
 
             try
             {
