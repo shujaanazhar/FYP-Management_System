@@ -14,44 +14,54 @@ namespace FYP_Management_System.Pages
         private readonly AppDbContext _context;
         private readonly ILogger<StudentHomePageModel> _logger;
 
-        [BindProperty]
-        public string Email { get; set; }
-        public int Batch { get; set; }
-        public string Department { get; set; }
-        public string FYP_Name { get; set; }
-        public float CGPA { get; set; }
-        public string Name { get; set; }
-        public string SupervisorID { get; set; }
-        public string Details { get; set; }
-        public string Domain { get; set; }
-
         public StudentHomePageModel(AppDbContext context, ILogger<StudentHomePageModel> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public void OnGet()
+        public class StudentInfo
         {
-            // Retrieve student information from your database or authentication service
-            var student = _context.Students.FirstOrDefault();
-            if (student != null)
-            {
-                Email = student.Email;
-                Batch = student.Batch;
-                Department = student.Department;
-                FYP_Name = student.FYP_Name;
-                CGPA = student.CGPA;
-            }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public int Batch { get; set; }
+            public string Department { get; set; }
+            public float CGPA { get; set; }
+            public string FYP_Name { get; set; }
+        }
 
-            var FYP = _context.FYPs.FirstOrDefault();
-            if (FYP != null)
-            {
-                Name = FYP.Name;
-                SupervisorID = FYP.SupervisorId;
-                Details = FYP.Details;
-                Domain = FYP.Domain;
-            }
+        public class FYP_Info
+        {
+            public string FYP_Name { get; set; }
+            public string Domain { get; set; }
+            public string Details { get; set; }
+            public string SupervisorEmail { get; set; }
+        }
+
+        public StudentInfo Student {  get; set; }
+        public void OnGet(string id)
+        {
+            Student = (from user in _context.Users
+                       join student in _context.Students
+                       on user.Email equals student.Email
+                       where user.Email == id
+                       select new StudentInfo
+                       {
+                           Email = user.Email,
+                           Name = user.Name,
+                           Batch = student.Batch,
+                           Department = student.Department,
+                           CGPA = student.CGPA,
+                       }).FirstOrDefault();
+
+            //var FYP = _context.FYPs.FirstOrDefault();
+            //if (FYP != null)
+            //{
+            //    Name = FYP.Name;
+            //    SupervisorID = FYP.SupervisorId;
+            //    Details = FYP.Details;
+            //    Domain = FYP.Domain;
+            //}
         }
 
         public IActionResult OnPost(string title, string description)
@@ -61,15 +71,15 @@ namespace FYP_Management_System.Pages
 
             // Retrieve the student information from your database or authentication service based on the user's email
             var student = _context.Students.FirstOrDefault(s => s.Email == userEmail);
-            if (student != null)
-            {
-                // Access the student's properties
-                Email = student.Email;
-                Batch = student.Batch;
-                Department = student.Department;
-                FYP_Name = student.FYP_Name;
-                CGPA = student.CGPA;
-            }
+            //if (student != null)
+            //{
+            //    // Access the student's properties
+            //    Email = student.Email;
+            //    Batch = student.Batch;
+            //    Department = student.Department;
+            //    FYP_Name = student.FYP_Name;
+            //    CGPA = student.CGPA;
+            //}
 
             // Save the proposal to the database
             var proposal = new FYP

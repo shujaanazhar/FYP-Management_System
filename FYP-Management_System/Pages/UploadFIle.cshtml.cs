@@ -26,7 +26,7 @@ namespace FYP_Management_System.Pages
 
         }
 
-        public void OnPostUpload(List<IFormFile> postedFiles)
+        public async Task<IActionResult> OnPostAsync(List<IFormFile> postedFiles)
         {
             string uploadsDirectory = Path.Combine(_environment.WebRootPath, "Uploads");
             if (!Directory.Exists(uploadsDirectory))
@@ -49,6 +49,7 @@ namespace FYP_Management_System.Pages
                 }
             }
 
+            return RedirectToPage("/StudentHomePage", new { success = true });
 
         }
     }

@@ -9,10 +9,7 @@
 <style>
     /* Center align the page content */
     .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+
     }
 
     /* Style for the student information container */
@@ -83,7 +80,7 @@
 </style>
 
 <div class="container">
-    <h1>Welcome, @Model.Email!</h1>
+    <h1>Welcome, @Model.Student.Name!</h1>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="studentTabs" role="tablist">
@@ -103,16 +100,15 @@
         <div class="tab-pane active" id="student-personal" role="tabpanel" aria-labelledby="student-personal-tab">
             <p>Student Information:</p>
             <ul>
-                <li><strong>Email:</strong> @Model.Email</li>
-                <li><strong>Batch:</strong> @Model.Batch</li>
-                <li><strong>Department:</strong> @Model.Department</li>
-                <li><strong>CGPA:</strong> @Model.CGPA</li> 
+                <li><strong>Email:</strong> @Model.Student.Name</li>
+                <li><strong>Batch:</strong> @Model.Student.Batch</li>
+                <li><strong>Department:</strong> @Model.Student.Department</li>
+                <li><strong>CGPA:</strong> @Model.Student.CGPA</li>
             </ul>
         </div>
 
         <div class="tab-pane fade" id="fyp" role="tabpanel" aria-labelledby="fyp-tab">
-            <h2>FYP Details</h2>
-            @if (Model.FYP_Name != null)
+            @* @if (Model.FYP_Name != null)
             {
                 <p><strong>FYP Name:</strong> @Model.FYP_Name</p>
                 <p><strong>Supervised ID:</strong> @Model.SupervisorID</p>
@@ -122,27 +118,13 @@
             else
             {
                 <p>No FYP </p>
-            }
+            } *@
         </div>
         <div class="tab-pane fade" id="fyp-proposal" role="tabpanel" aria-labelledby="fyp-proposal-tab">
             <h2>FYP Details</h2>
             <div class="container">
                 <div class="student-info">
-                    <h1>Welcome, @Model.Email!</h1>
-
-                    <div>
-                        <p>Student Information:</p>
-                        <ul>
-                            <li><strong>Email:</strong> @Model.Email</li>
-                            <li><strong>Batch:</strong> @Model.Batch</li>
-                            <li><strong>Department:</strong> @Model.Department</li>
-                            <li><strong>FYP Name:</strong> @Model.FYP_Name</li>
-                            <li><strong>CGPA:</strong> @Model.CGPA</li>
-                        </ul>
-                    </div>
-
-                    <h2>Submit FYP Proposal</h2>
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="title">Title:</label>
                             <input type="text" class="form-control" id="title" name="Title" required>
@@ -151,9 +133,12 @@
                             <label for="description">Description:</label>
                             <textarea class="form-control" id="description" name="Description" rows="5" required></textarea>
                         </div>
+                        <!-- File input for document upload -->
+                        <div class="form-group">
+                            <label for="file-upload" class="btn btn-secondary">Attach Document</label>
+                            <input type="file" id="file-upload" name="postedFiles" multiple style="display:none;" accept=".pdf" required/>
+                        </div>
                         <button type="submit" class="btn btn-primary">Submit Proposal</button>
-                        <!-- Button to attach a document -->
-                        <button type="button" class="btn btn-secondary attach-button" onclick="OptionSelected()">Attach Document</button>
                     </form>
                 </div>
             </div>
