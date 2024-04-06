@@ -1,0 +1,5 @@
+The project is now shit. I have changed something in student homepage.
+something in supervisor homepage.
+
+Need to correct the implementation of fyp proposal
+and also display student group members in bullets

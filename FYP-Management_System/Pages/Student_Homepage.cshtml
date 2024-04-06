@@ -6,35 +6,36 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<style>
-    /* Center align the page content */
-    .container {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<style>
+    /* Style for the fyp information container */
+    .centering-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        padding: 20px;
     }
 
-    /* Style for the student information container */
-    .student-info {
-        width: 400px;
+    html, body {
+        height: 100%;
+        margin: 0; /* Removes default margin */
+        overflow-y: auto; /* Ensures the page is scrollable vertically */
+    }
+    .fyp-info {
+        width: 600px;
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 8px;
         background-color: #f9f9f9;
+        margin-bottom: 20px;
     }
 
     /* Style for the headings */
     h1, h2 {
         text-align: center;
         color: #333;
-    }
-
-    /* Style for the student information list */
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    ul li {
-        margin-bottom: 10px;
     }
    
     .container {
@@ -73,15 +74,21 @@
         color: white;
     }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
+    .supervisors{
+        border-radius: 5px;
+        border: 1px solid #CCCCCC;
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 100%;
     }
 </style>
 
 <div class="container">
-    <h1>Welcome, @Model.Student.Name!</h1>
-
+    @if (Model.Student != null)
+    {
+        <h2>Welcome @Model.Student.Name!</h2>
+        <br />
+    }
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="studentTabs" role="tablist">
         <li class="nav-item">
@@ -90,59 +97,130 @@
         <li class="nav-item">
             <a class="nav-link" id="fyp-tab" data-bs-toggle="tab" href="#fyp" role="tab" aria-controls="fyp" aria-selected="false">FYP Details</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="fyp-proposal-tab" data-bs-toggle="tab" href="#fyp-proposal" role="tab" aria-controls="fyp-proposal" aria-selected="false">FYP Proposal</a>
-        </li>
+        @if (Model.Student.FYP_Name == null)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="fyp-proposal-tab" data-bs-toggle="tab" href="#fyp-proposal" role="tab" aria-controls="fyp-proposal" aria-selected="false">FYP Proposal</a>
+            </li>
+        }
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="student-personal" role="tabpanel" aria-labelledby="student-personal-tab">
-            <p>Student Information:</p>
-            <ul>
-                <li><strong>Email:</strong> @Model.Student.Name</li>
-                <li><strong>Batch:</strong> @Model.Student.Batch</li>
-                <li><strong>Department:</strong> @Model.Student.Department</li>
-                <li><strong>CGPA:</strong> @Model.Student.CGPA</li>
-            </ul>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Name:</th>
+                        <td>@Model.Student.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Batch:</th>
+                        <td>@Model.Student.Batch</td>
+                    </tr>
+                    <tr>
+                        <th>Department:</th>
+                        <td>@Model.Student.Department</td>
+                    </tr>
+                    <tr>
+                        <th>CGPA:</th>
+                        <td>@Model.Student.CGPA</td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
         <div class="tab-pane fade" id="fyp" role="tabpanel" aria-labelledby="fyp-tab">
-            @* @if (Model.FYP_Name != null)
+            @if (Model.Student.FYP_Name != null)
             {
-                <p><strong>FYP Name:</strong> @Model.FYP_Name</p>
-                <p><strong>Supervised ID:</strong> @Model.SupervisorID</p>
-                <p><strong>Details:</strong> @Model.Details</p>
-                <p><strong>Domain:</strong> @Model.Domain</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>FYP Name</th>
+                            <th>Supervisor Name</th>
+                            <th>Details</th>
+                            <th>Domain</th>
+                            <th>Group Members</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.FYP.FYP_Name</td>
+                            <td>@Model.FYP.Supervisor</td>
+                            <td>@Model.FYP.Details</td>
+                            <td>@Model.FYP.Domain</td>
+                            <td style="width:200px">
+                                <ul>
+                                    @foreach (var student in Model.FYP.GroupMemberNames)
+                                    {
+                                        <li>@student</li>
+                                    }
+                                </ul>
+                            </td>
+                            <td>@Model.FYP.Status</td>
+                        </tr>
+                    </tbody>
+                </table>
             }
             else
             {
-                <p>No FYP </p>
-            } *@
+                <p>No FYP Registered Yet!</p>
+            }
         </div>
-        <div class="tab-pane fade" id="fyp-proposal" role="tabpanel" aria-labelledby="fyp-proposal-tab">
-            <h2>FYP Details</h2>
-            <div class="container">
-                <div class="student-info">
-                    <form method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input type="text" class="form-control" id="title" name="Title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea class="form-control" id="description" name="Description" rows="5" required></textarea>
-                        </div>
-                        <!-- File input for document upload -->
-                        <div class="form-group">
-                            <label for="file-upload" class="btn btn-secondary">Attach Document</label>
-                            <input type="file" id="file-upload" name="postedFiles" multiple style="display:none;" accept=".pdf" required/>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Proposal</button>
-                    </form>
+        @if (Model.Student.FYP_Name == null)
+        {
+            <div class="tab-pane fade" id="fyp-proposal" role="tabpanel" aria-labelledby="fyp-proposal-tab">
+                <div class="centering-container">
+                    <div class="fyp-info">
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="Email" value="@Model.Student.Email" />
+                            <div class="form-group">
+                                <label for="title">FYP Name</label>
+                                <input type="text" class="form-control" placeholder="FYP Name" name="fypName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="domain">Domain:</label>
+                                <input type="text" class="form-control" placeholder="Domain" name="domain" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="group_member">Group Members:</label>
+                                <input type="email" class="form-control" placeholder="Member 2 Email" name="memberEmails" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Member 3 Email" name="memberEmails">
+                                <small style="color: red">* Enter up to 2 group members' emails!<br />
+                                                            * Each member should already be signed up!
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor">Supervisor</label>
+                                <select name="supervisorEmail" class="supervisors" id="supervisorSelect" required>
+                                    <option value="">Select a Supervisor</option>
+                                    @foreach (var supervisor in Model.Supervisor)
+                                    {
+                                        <option value="@supervisor.Email">@supervisor.Role @supervisor.Name (@supervisor.Domain)</option>
+                                    }
+                                </select>
+                                <small style="color: red">* Please select the supervisor preferably whose domain aligns with your project</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" name="details" rows="5" required></textarea>
+                            </div>
+                            <!-- File input for document upload -->
+                            <div class="form-group">
+                                <label for="file-upload" class="btn btn-secondary">Attach Document</label>
+                                <input type="file" id="file-upload" name="postedFiles" accept=".pdf" required style="display: none;" onchange="document.getElementById('selectedFileName').value = this.files[0].name" />
+                                <input type="text" id="selectedFileName" placeholder="No file chosen" class="form-control" readonly />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Proposal</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 

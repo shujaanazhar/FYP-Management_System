@@ -20,7 +20,8 @@ namespace FYP_Management_System.Pages
         {
             public string Name { get; set; }
             public string Description { get; set; }
-            public List<string> StudentNames { get; set; }
+            public string Domain { get; set; }
+            public List<string> StudentNames { get; set; } = new List<string>();
             public string Status { get; set; }
         }
 
@@ -42,16 +43,65 @@ namespace FYP_Management_System.Pages
                           })
                           .FirstOrDefault();
 
-            Fyps = (from fyps in _context.FYPs
-                    where fyps.SupervisorId == Supervisor.Email
+            Fyps = (from fyp in _context.FYPs
+                    where fyp.SupervisorId == Supervisor.Email
                     select new FYPInfo
                     {
-                        Name = fyps.Name,
-                        Description = fyps.Details,
-                        Status = fyps.Status
+                        Name = fyp.Name,
+                        Description = fyp.Details,
+                        Domain = fyp.Domain,
+                        Status = fyp.Status,
+                        StudentNames = (from student in fyp.Students
+                                        join user in _context.Users on student.Email equals user.Email
+                                        select user.Name).ToList() // Getting student names
                     }).ToList();
         }
 
+        public async Task<IActionResult> OnPostApproveRequest(string fypName)
+        {
+            var fyp = await _context.FYPs
+                .FirstOrDefaultAsync(f => f.Name== fypName);
+
+            if (fyp != null)
+            {
+                fyp.Status = "Approved";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage(new { id = fyp.SupervisorId });
+        }
+
+        public async Task<IActionResult> OnPostRejectRequest(string fypName)
+        {
+            var fyp = await _context.FYPs
+                .FirstOrDefaultAsync(f => f.Name == fypName);
+
+            if (fyp != null)
+            {
+                fyp.Status = "Reject";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage(new { id = fyp.SupervisorId});
+        }
+
+        public async Task<IActionResult> OnGetDownloadDocumentAsync(string fypName)
+        {
+            var fyp = await _context.FYPs.FirstOrDefaultAsync(f => f.Name == fypName);
+            if (fyp == null || string.IsNullOrWhiteSpace(fyp.DocumentPath))
+            {
+                return NotFound("Document not found.");
+            }
+
+            var filePath = fyp.DocumentPath;
+            var fileName = Path.GetFileName(filePath); // Assuming you want to use the actual file name
+
+            // Ensure the MIME type is correct; for example, "application/pdf" for PDF files. 
+            // You might need to determine this dynamically based on the file type.
+            var mimeType = "APPLICATION/octet-stream"; // Generic MIME type for binary data
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(fileBytes, mimeType, fileName);
+        }
 
     }
 }

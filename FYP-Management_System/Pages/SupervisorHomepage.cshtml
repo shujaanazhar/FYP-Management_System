@@ -4,13 +4,6 @@
     ViewData["Title"] = "Supervisor Home";
 }
 <style>
-    body {
-        /* display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh; */
-    }
-
     .container {
         text-align: center;
     }
@@ -47,10 +40,6 @@
         color: white;
     }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
 </style>
 <body>
     <div class="container">
@@ -64,9 +53,6 @@
             <li class="nav-item">
                 <a class="nav-link" id="project-proposals-tab" data-bs-toggle="tab" href="#project-proposals" role="tab" aria-controls="project-proposals" aria-selected="false">Project Proposals</a>
             </li>
-            @* <li class="nav-item">
-                <a class="nav-link" id="instructors-list-tab" data-bs-toggle="tab" href="#instructors-list" role="tab" aria-controls="instructors-list" aria-selected="false">Instructors List</a>
-            </li> *@
         </ul>
 
         <!-- Tab Panes-->
@@ -84,7 +70,7 @@
                     <tbody>
                         @foreach(var fyp in Model.Fyps)
                         {
-                            @* @if (fyp.Status == "Approved") *@
+                            @if (fyp.Status == "Approved")
                             {
                                 <tr>
                                     <td>
@@ -92,11 +78,11 @@
                                     </td>
                                     <td>@fyp.Description</td>
                                     <td>
-                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
-                                            @* @foreach (var studentName in fyp.StudentNames)
-                                    {
-                                    <li>@studentName</li>
-                                    } *@
+                                        <ul>
+                                            @foreach (var studentName in fyp.StudentNames)
+                                            {
+                                                <li>@studentName</li>
+                                            }
                                         </ul>
                                     </td>
                                 </tr>
@@ -112,6 +98,7 @@
                             <th>FYP Name</th>
                             <th>Details</th>
                             <th>Group Members</th>
+                            <th>Proposal Document</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -122,19 +109,22 @@
                             {
                                 <tr>
                                     <td>@fyp.Name</td>
-                                    <td>@fyp.Description</td>
+                                    <td style="width:400px">@fyp.Description</td>
                                     <td>
-                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
-                                            @* @foreach (var studentName in fyp.StudentNames)
-                                    {
-                                    <li>@studentName</li>
-                                    } *@
+                                        <ul>
+                                            @foreach (var studentName in fyp.StudentNames)
+                                            {
+                                                <li>@studentName</li>
+                                            }
                                         </ul>
                                     </td>
                                     <td>
+                                        <a href="@Url.Page("/SupervisorHomepage", "DownloadDocument", new { fypName = fyp.Name })" class="btn btn-primary">Download Document</a>
+                                    </td>
+                                    <td>
                                         <form method="post">
-                                            <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorEmail="@fyp.Name">Approve</button>
-                                            <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorEmail="@fyp.Name">Reject</button>
+                                            <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-fypName="@fyp.Name">Approve</button>
+                                            <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-fypName="@fyp.Name">Reject</button>
                                         </form>
                                     </td>
                                 </tr>
