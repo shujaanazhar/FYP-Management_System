@@ -24,4 +24,9 @@
     <Folder Include="logs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Uploads\AM341.pdf" />
+    <None Include="wwwroot\Uploads\i210406_i210567_G_Deliverable01.docx.pdf" />
+  </ItemGroup>
+
 </Project>

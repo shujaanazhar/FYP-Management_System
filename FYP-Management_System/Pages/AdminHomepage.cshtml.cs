@@ -114,27 +114,5 @@ namespace FYP_Management_System.Pages
 
             return new JsonResult(supervisorDetails);
         }
-
-
-        //public async Task<IActionResult> OnPostDeleteSupervisorAsync(string email)
-        //{
-        //    var supervisor = await _context.Supervisors
-        //        .Include(s => s.FYP)
-        //        .FirstOrDefaultAsync(s => s.Email == email);
-        //    if (supervisor != null && !supervisor.FYP.Any())
-        //    {
-        //        _context.Supervisors.Remove(supervisor);
-        //        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        //        if (user != null)
-        //        {
-        //            _context.Users.Remove(user);
-        //        }
-
-        //        await _context.SaveChangesAsync();
-
-        //    }
-
-        //    return new JsonResult(new { success = true });
-        //}
     }
 }
