@@ -16,15 +16,13 @@ namespace NexGen.Models
         [Required]
         [StringLength(3)]
         public string Department { get; set; }
-
+        [ForeignKey("FYP")]
         public string? FYP_Name { get; set; }
 
         [Required]
         public float CGPA { get; set; }
 
         public virtual User User { get; set; }
-
-        // Navigation property to FYP
         public virtual FYP FYP { get; set; }
     }
 }

@@ -47,10 +47,6 @@
         color: white;
     }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
 </style>
 <body>
     <div class="container">
@@ -84,7 +80,7 @@
                     <tbody>
                         @foreach(var fyp in Model.Fyps)
                         {
-                            @* @if (fyp.Status == "Approved") *@
+                            @if (fyp.Status == "Approved")
                             {
                                 <tr>
                                     <td>
@@ -92,11 +88,11 @@
                                     </td>
                                     <td>@fyp.Description</td>
                                     <td>
-                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
-                                            @* @foreach (var studentName in fyp.StudentNames)
-                                    {
-                                    <li>@studentName</li>
-                                    } *@
+                                        <ul>
+                                            @foreach (var studentName in fyp.StudentNames)
+                                            {
+                                                <li>@studentName</li>
+                                            }
                                         </ul>
                                     </td>
                                 </tr>
@@ -112,6 +108,7 @@
                             <th>FYP Name</th>
                             <th>Details</th>
                             <th>Group Members</th>
+                            <th>Proposal Document</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -122,19 +119,22 @@
                             {
                                 <tr>
                                     <td>@fyp.Name</td>
-                                    <td>@fyp.Description</td>
+                                    <td style="width:400px">@fyp.Description</td>
                                     <td>
-                                        <ul style="list-style-type:circle; padding-left: 20px; margin: 0;">
-                                            @* @foreach (var studentName in fyp.StudentNames)
-                                    {
-                                    <li>@studentName</li>
-                                    } *@
+                                        <ul>
+                                            @foreach (var studentName in fyp.StudentNames)
+                                            {
+                                                <li>@studentName</li>
+                                            }
                                         </ul>
                                     </td>
                                     <td>
+                                        <a href="@Url.Page("/SupervisorHomepage", "DownloadDocument", new { fypName = fyp.Name })" class="btn btn-primary">Download Document</a>
+                                    </td>
+                                    <td>
                                         <form method="post">
-                                            <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-supervisorEmail="@fyp.Name">Approve</button>
-                                            <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-supervisorEmail="@fyp.Name">Reject</button>
+                                            <button class="approve-button" type="submit" asp-page-handler="ApproveRequest" asp-route-fypName="@fyp.Name">Approve</button>
+                                            <button class="reject-button" type="submit" asp-page-handler="RejectRequest" asp-route-fypName="@fyp.Name">Reject</button>
                                         </form>
                                     </td>
                                 </tr>

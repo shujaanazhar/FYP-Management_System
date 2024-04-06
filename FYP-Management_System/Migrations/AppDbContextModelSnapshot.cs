@@ -44,7 +44,7 @@ namespace FYP_Management_System.Migrations
 
                     b.HasIndex("FYPName");
 
-                    b.ToTable("Iteration");
+                    b.ToTable("Iterations");
                 });
 
             modelBuilder.Entity("NexGen.Models.FYP", b =>
@@ -56,11 +56,18 @@ namespace FYP_Management_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DocumentPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Domain")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentEmails")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SupervisorId")
@@ -90,15 +97,12 @@ namespace FYP_Management_System.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<string>("FYPName")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("FYP_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Email");
 
-                    b.HasIndex("FYPName");
+                    b.HasIndex("FYP_Name");
 
                     b.ToTable("Students");
                 });
@@ -166,7 +170,7 @@ namespace FYP_Management_System.Migrations
 
                     b.HasIndex("IterationId");
 
-                    b.ToTable("ToDoItem");
+                    b.ToTable("ToDoItems");
                 });
 
             modelBuilder.Entity("Iteration", b =>
@@ -200,8 +204,8 @@ namespace FYP_Management_System.Migrations
                         .IsRequired();
 
                     b.HasOne("NexGen.Models.FYP", "FYP")
-                        .WithMany("Students")
-                        .HasForeignKey("FYPName");
+                        .WithMany()
+                        .HasForeignKey("FYP_Name");
 
                     b.Navigation("FYP");
 
@@ -238,8 +242,6 @@ namespace FYP_Management_System.Migrations
             modelBuilder.Entity("NexGen.Models.FYP", b =>
                 {
                     b.Navigation("Iterations");
-
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("NexGen.Models.Supervisor", b =>

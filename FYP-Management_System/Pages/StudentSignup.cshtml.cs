@@ -80,11 +80,11 @@ namespace FYP_Management_System.Pages
                 // Create a new Student instance and associate it with the user
                 var newStudent = new Student
                 {
-                    Email = NewStudent.Email, // This assumes the email is the key for both User and Supervisor
+                    Email = NewStudent.Email, // This assumes the email is the key for both User and Student
                     Batch = NewStudent.Batch,
                     Department = NewStudent.Department,
                     CGPA = NewStudent.CGPA,
-                    User = newUser // Associate the User entity with the Supervisor entity
+                    User = newUser // Associate the User entity with the Student entity
                 };
 
                 // Add both the User and Student to the DbContext
