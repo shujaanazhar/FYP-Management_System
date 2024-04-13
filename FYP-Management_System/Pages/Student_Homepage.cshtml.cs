@@ -2,10 +2,7 @@ using FYP_Management_System.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using NexGen.Models;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 
 namespace FYP_Management_System.Pages
@@ -38,9 +35,9 @@ namespace FYP_Management_System.Pages
             public string FYP_Name { get; set; }
             public string Domain { get; set; }
             public string Details { get; set; }
-            public string Supervisor{ get; set; }
+            public string Supervisor { get; set; }
             public string Status { get; set; }
-            public List<string> GroupMemberNames{ get; set; } = new List<string>();
+            public List<string> GroupMemberNames { get; set; } = new List<string>();
         }
         public class SupervisorInfo
         {
@@ -50,7 +47,7 @@ namespace FYP_Management_System.Pages
             public string Role { get; set; }
         }
 
-        public StudentInfo Student {  get; set; }
+        public StudentInfo Student { get; set; }
         public FYP_Info FYP { get; set; }
         public List<SupervisorInfo> Supervisor { get; set; }
         public string Email { get; set; }
@@ -58,30 +55,30 @@ namespace FYP_Management_System.Pages
         public async Task OnGetAsync(string id)
         {
             Student = await (from user in _context.Users
-                       join student in _context.Students
-                       on user.Email equals student.Email
-                       where user.Email == id
-                       select new StudentInfo
-                       {
-                           Email = user.Email,
-                           Name = user.Name,
-                           Batch = student.Batch,
-                           Department = student.Department,
-                           CGPA = student.CGPA,
-                           FYP_Name = student.FYP_Name
-                       }).FirstOrDefaultAsync();
+                             join student in _context.Students
+                             on user.Email equals student.Email
+                             where user.Email == id
+                             select new StudentInfo
+                             {
+                                 Email = user.Email,
+                                 Name = user.Name,
+                                 Batch = student.Batch,
+                                 Department = student.Department,
+                                 CGPA = student.CGPA,
+                                 FYP_Name = student.FYP_Name
+                             }).FirstOrDefaultAsync();
 
             Supervisor = await (from supervisor in _context.Supervisors
-                          join user in _context.Users
-                          on supervisor.Email equals user.Email
-                          where supervisor.Status == "Approved"
-                          select new SupervisorInfo
-                          {
-                              Email = supervisor.Email,
-                              Name = user.Name,
-                              Domain = supervisor.Domain,
-                              Role = supervisor.Role
-                          }).ToListAsync();
+                                join user in _context.Users
+                                on supervisor.Email equals user.Email
+                                where supervisor.Status == "Approved"
+                                select new SupervisorInfo
+                                {
+                                    Email = supervisor.Email,
+                                    Name = user.Name,
+                                    Domain = supervisor.Domain,
+                                    Role = supervisor.Role
+                                }).ToListAsync();
 
             FYP = await (from student in _context.Students
                          join fyp in _context.FYPs on student.FYP_Name equals fyp.Name

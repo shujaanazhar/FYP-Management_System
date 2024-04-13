@@ -147,7 +147,18 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.FYP.FYP_Name</td>
+                            <td>
+                                @{
+                                    if(Model.FYP.Status == "Approved")
+                                    {
+                                        <a asp-page="/FypIterations" asp-route-name="@Model.FYP.FYP_Name" asp-route-id="@Model.Student.Email" asp-route-role="ST">@Model.FYP.FYP_Name</a>
+                                    }
+                                    else
+                                    {
+                                        @Model.FYP.FYP_Name;
+                                    }
+                                }
+                            </td>
                             <td>@Model.FYP.Supervisor</td>
                             <td>@Model.FYP.Details</td>
                             <td>@Model.FYP.Domain</td>

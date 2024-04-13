@@ -1,0 +1,80 @@
+﻿@* @page
+@model FYP_Management_System.Pages.tempModel
+@{
+    ViewData["Title"] = "Iterations";
+}
+<style>
+    .page-container {
+        margin: 20px;
+    }
+
+    .add-iteration-btn {
+        float: right;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .iteration-form {
+        clear: both;
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+        .iteration-form h3 {
+            margin-top: 0;
+        }
+
+    input[type="text"], input[type="date"] {
+        padding: 10px;
+        margin: 10px 0;
+        width: 100%;
+        display: block;
+    }
+
+    .task-form {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Iterations</title>
+</head>
+<body>
+    <form method="post">
+        <div class="page-container">
+            <button type="submit" id="addIterationBtn" class="add-iteration-btn">Create New Iteration</button>
+            <div id="iterationsContainer" class="iterations-container"></div>
+        </div>
+
+        <div class="iteration-form">
+            <h3>Iteration Details</h3>
+            <input id="iterationNameInput" type="text" name="Name" placeholder="Enter Iteration Name" required>
+            <input id="iterationDetailsInput" type="text" name="Details" placeholder="Enter details for Iteration" required>
+            <input type="date" placeholder="Due Date" required>
+            <div class="task-form">
+                <h4>Tasks for Iteration</h4>
+                <input type="text" name="Tasks" placeholder="Task 1" required>
+                <input type="text" name="Tasks" placeholder="Task 2"> <!-- Additional tasks as needed -->
+                <!-- Add more input fields for each task as required -->
+                <button type="button" class="btn add-task-btn">+ Add Task</button> <!-- This button can be used to dynamically add more task inputs -->
+            </div>
+        </div>
+    </form>
+</body>
+ *@

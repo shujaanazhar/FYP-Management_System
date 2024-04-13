@@ -12,7 +12,5 @@ namespace FYP_Management_System.DAL
         public virtual DbSet<Supervisor> Supervisors { get; set; }
         public virtual DbSet<FYP> FYPs { get; set; }
         public virtual DbSet<Iteration> Iterations { get; set; }
-        public virtual DbSet<ToDoItem> ToDoItems { get; set; }
-
     }
 }
