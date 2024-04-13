@@ -166,7 +166,7 @@
 </div>
 
 <!-- Bootstrap Modal -->
-<div class="modal fade" id="supervisorDetailsModal" tabindex="-1" role="dialog" aria-labelledby="supervisorDetailsModalLabel" aria-hidden="true">
+<di<div class="modal fade" id="supervisorDetailsModal" role="dialog" aria-labelledby="supervisorDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -183,7 +183,7 @@
             </div>
         </div>
     </div>
-</div>
+</di>
 
 @section Scripts {
     <script>
@@ -196,6 +196,17 @@
 
             // Activate the first tab by default
             $('#adminTabs a:first').tab('show');
+
+            $('#supervisorDetailsModal').on('click', '.btn-secondary', function () {
+                $('#supervisorDetailsModal').modal('hide');
+            });
+
+            // Clean up after modal close
+            $('#supervisorDetailsModal').on('hidden.bs.modal', function () {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+                $(this).find('.modal-body').empty();
+            });
         });
 
         function loadSupervisorDetails(email) {
@@ -205,20 +216,27 @@
                 data: { email: email },
                 contentType: 'application/json',
                 success: function (data) {
-                    // Assuming 'data' is the JSON object returned from the server
                     $('#supervisorDetailsModalLabel').text(`Details for ${data.email}`);
                     var modalBody = $('#supervisorDetailsModal .modal-body');
                     modalBody.empty();
                     modalBody.append(`<p><strong>Role:</strong> ${data.role}</p>`);
                     modalBody.append(`<p><strong>Domain:</strong> ${data.domain}</p>`);
-                    modalBody.append('<p><strong>FYPs Managed:</strong></p>');
-                    var ul = $('<ul></ul>');
-                    data.FYPs.forEach(function (fyp) {
-                        ul.append(`<li>${fyp.name} - ${fyp.details} (${fyp.domain})</li>`);
-                    });
-                    modalBody.append(ul);
+
+                    // Add a check for fypTitles existence and if it's an array
+                    if (data.fypTitles && Array.isArray(data.fypTitles)) {
+                        modalBody.append('<p><strong>FYPs Managed:</strong></p>');
+                        var ul = $('<ul></ul>');
+                        data.fypTitles.forEach(function (title) {
+                            ul.append(`<li>${title}</li>`);
+                        });
+                        modalBody.append(ul);
+                    } else {
+                        modalBody.append('<p>No FYPs Managed or data unavailable.</p>');
+                    }
+
                     $('#supervisorDetailsModal').modal('show');
                 },
+
                 error: function (err) {
                     console.error('Error fetching supervisor details:', err);
                 }

@@ -16,10 +16,11 @@ namespace FYP_Management_System.Pages
 
         public class SupervisorInfo
         {
-            
+
             public string Email { get; set; }
             public string Name { get; set; }
             public string Domain { get; set; }
+            public List<string> FypTitles { get; set; }
         }
 
         public class FypInfo
@@ -56,7 +57,8 @@ namespace FYP_Management_System.Pages
                               {
                                   Email = supervisor.Email,
                                   Name = supervisor.Role + " " + user.Name,
-                                  Domain = supervisor.Domain
+                                  Domain = supervisor.Domain,
+                                  FypTitles = supervisor.FYP.Select(f => f.Name).ToList()
                               }).ToList();
 
             Fyps = (from fyp in _context.FYPs
@@ -107,12 +109,12 @@ namespace FYP_Management_System.Pages
                     s.Email,
                     s.Role,
                     s.Domain,
-                    FYPs = s.FYP.Select(f => new { f.Name }).ToList()
-                    //canDelete = !s.FYP.Any() // Ensure this correctly reflects whether the supervisor can be deleted
+                    FypTitles = s.FYP.Select(f => f.Name + " (" + f.Domain + ")").ToList() // This should match your SupervisorInfo class
                 })
                 .FirstOrDefaultAsync();
 
             return new JsonResult(supervisorDetails);
         }
+
     }
 }

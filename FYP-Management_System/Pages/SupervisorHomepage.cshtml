@@ -74,7 +74,7 @@
                             {
                                 <tr>
                                     <td>
-                                        <a asp-page="/FypIterations" asp-route-name="@fyp.Name">@fyp.Name</a>
+                                        <a asp-page="/FypIterations" asp-route-name="@fyp.Name" asp-route-id="@Model.Supervisor.Email" asp-route-role="SP">@fyp.Name</a>
                                     </td>
                                     <td>@fyp.Description</td>
                                     <td>
