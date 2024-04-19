@@ -59,6 +59,12 @@
     <title>Create Iterations</title>
 </head>
 <body>
+    <form method="post" asp-page-handler="GenerateReport">
+        <input type="hidden" name="fypName" value="@Model.fypName" />
+        <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn btn-outline-info">Generate Report</button>
+        </div>
+    </form>
     <!-- Nav tabs-->
     <ul class="nav nav-tabs" id="iterationTabs" role="tablist">
         <li class="nav-item">
