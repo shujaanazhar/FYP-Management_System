@@ -61,7 +61,7 @@ namespace FYP_Management_System.Pages
             }
 
             _logger.LogWarning($"Failed login attempt for user {Email}");
-            Message = "Invalid login attempt. Please try again.";
+            Message = "Either invalid login attempt or not yet approved. Please contact Academic Officer.";
             return Page();
         }
 
